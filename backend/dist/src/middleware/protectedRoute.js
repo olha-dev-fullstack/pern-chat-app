@@ -1,10 +1,5 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const prisma_1 = __importDefault(require("../db/prisma"));
+import jwt from "jsonwebtoken";
+import prisma from "../db/prisma.js";
 const protectedRoute = async (req, res, next) => {
     try {
         const token = req.cookies.jwt;
@@ -12,12 +7,12 @@ const protectedRoute = async (req, res, next) => {
             res.status(401).json({ error: "Unauthorized" });
             return;
         }
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (!decoded) {
             res.status(401).json({ error: "Unauthorized" });
             return;
         }
-        const user = await prisma_1.default.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id: decoded.userId },
             select: { id: true, username: true, fullName: true, profilePic: true },
         });
@@ -33,4 +28,4 @@ const protectedRoute = async (req, res, next) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
-exports.default = protectedRoute;
+export default protectedRoute;
