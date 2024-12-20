@@ -1,4 +1,4 @@
-import useChatScroll from "../../hooks/usechatScroll";
+import useChatScroll from "../../hooks/useChatScroll";
 import useGetMessages from "../../hooks/useGetMessages";
 import useListenMessages from "../../hooks/useListenMessages";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
